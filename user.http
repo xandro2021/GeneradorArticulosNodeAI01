@@ -1,0 +1,88 @@
+@host = http://localhost:3000
+@api = {{host}}/api/user
+@id = 6884e2a5a9d35c51cb2d3d8a
+@token = TU_JWT_AQUI
+
+### ============================================
+### Registrar usuario
+### ============================================
+POST {{api}}/register
+Content-Type: application/json
+
+{
+  "name": "Iñigo",
+  "surname": "Salazar",
+  "nick": "xandro",
+  "email": "xandro@example.com",
+  "password": "12345678",
+  "bio": "Desarrollador Backend con Node.js",
+  "extra": true
+}
+
+###
+
+### ============================================
+### Login
+### ============================================
+POST {{api}}/login
+Content-Type: application/json
+
+{
+  "email": "xandro@example.com",
+  "password": "12345678"
+}
+
+###
+
+### ============================================
+### Obtener perfil
+### ============================================
+GET {{api}}/profile/{{id}}
+
+###
+
+### ============================================
+### Actualizar usuario
+### ============================================
+PUT {{api}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Alejandro",
+  "surname": "Salazar Mora",
+  "nick": "xandrodev",
+  "email": "xandro@example.com",
+  "bio": "Nueva biografía"
+}
+
+###
+
+### ============================================
+### Subir avatar
+### ============================================
+PUT {{api}}/upload/{{id}}
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file0"; filename="avatar.png"
+Content-Type: image/png
+
+< /home/xandro/Imágenes/avatar.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+ID=6884e2a5a9d35c51cb2d3d8a
+TOKEN="TU_TOKEN"
+IMG="$HOME/Imágenes/avatar.png"
+
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "file0=@$IMG" \
+  "http://localhost:3000/api/user/upload/$ID"
+
+### ============================================
+### Obtener avatar
+### ============================================
+GET {{api}}/avatar/default.png

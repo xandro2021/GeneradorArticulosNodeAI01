@@ -50,9 +50,9 @@ const validate = (user: RegisterUserDto) => {
 
   const password =
     !validator.isEmpty(user.password) &&
-    validator.isLength(user.nick, { min: 6, max: 100 });
+    validator.isLength(user.password, { min: 6, max: 100 });
 
-  if (!email) {
+  if (!password) {
     throw new AppError(400, "El password no debe estar vacío y debe tener entre 6 y 100 caracteres");
   }
 

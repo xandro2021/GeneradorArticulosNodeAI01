@@ -11,11 +11,14 @@ const register = async (user: RegisterUserDto) => {
     validate(user);
 
     const exists = await User.findOne({
-        email: user.email
+        $or: [
+            { email: user.email.toLowerCase() },
+            { nick: user.nick.toLowerCase() }
+        ]
     });
 
     if(exists){
-        throw new AppError(409, "Email ya registrado");
+        throw new AppError(409, "El usuario ya existe");
     }
 
     // hash

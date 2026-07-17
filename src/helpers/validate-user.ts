@@ -34,7 +34,7 @@ const validate = (user: RegisterUserDto) => {
 
   const nick =
     !validator.isEmpty(user.nick) &&
-    validator.isLength(user.nick, { min: 3, max: 80 });
+    validator.isLength(user.nick, { min: 2, max: 80 });
 
   if (!nick) {
     throw new AppError(400, "El usuario no se ha superado la validación del apodo");
@@ -49,8 +49,12 @@ const validate = (user: RegisterUserDto) => {
   }
 
   const password =
-    !validator.isEmpty(user.password);
+    !validator.isEmpty(user.password) &&
+    validator.isLength(user.nick, { min: 6, max: 100 });
 
+  if (!email) {
+    throw new AppError(400, "El password no debe estar vacío y debe tener entre 6 y 100 caracteres");
+  }
 
 };
 

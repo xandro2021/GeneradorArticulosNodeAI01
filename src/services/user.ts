@@ -47,22 +47,34 @@ const register = async (user: RegisterUserDto) => {
 
 const login = async (body: LoginUserDto) => {
 
-    const userLogin = {
-        ...body
-    }
-
-    if (!userLogin.email || !userLogin.password) {
+    if (!body.email || !body.password) {
         throw new AppError(400, "Faltan datos por enviar");
     }
 
-    const userModel = await User.findOne({ email: userLogin.email.toLowerCase() });
+    const user = await User.findOne({ email: body.email.toLowerCase() });
 
-    if (!userModel) {
+    if (!user) {
         throw new AppError(500, "Error al buscar el usuario");
     }
 
+    const pwd = bcrypt.compareSync(body.password, user.password);
 
-    return userLogin;
+    if (!pwd) {
+        throw new AppError(400, "La contraseña no es correcta!!!");
+    }
+
+    const token = null;
+
+    const userLogin = {
+        _id: user._id,
+        name: user.name,
+        nick: user.nick
+    };
+
+    return {
+        userLogin,
+        token
+    }
 };
 
 export default {

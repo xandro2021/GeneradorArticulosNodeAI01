@@ -10,10 +10,10 @@ POST {{api}}/register
 Content-Type: application/json
 
 {
-  "name": "Iñigo",
+  "name": "Alejandro",
   "surname": "Salazar",
-  "nick": "xandross",
-  "email": "xandross@example.com",
+  "nick": "xandro",
+  "email": "xandro@example.com",
   "password": "12345678",
   "bio": "Desarrollador Backend con Node.js",
   "extra": true
@@ -29,7 +29,7 @@ Content-Type: application/json
 
 {
   "email": "xandro@example.com",
-  "password": "12345sss678"
+  "password": "12345678"
 }
 
 ###

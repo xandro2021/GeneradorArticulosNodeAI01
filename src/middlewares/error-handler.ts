@@ -15,6 +15,8 @@ const errorHandler = (
   _next: NextFunction
 ) => {
 
+  console.error(error);
+
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
       status: "error",
@@ -22,15 +24,12 @@ const errorHandler = (
     });
   }
   else if (error instanceof Error) {
-    console.error(error);
 
     return res.status(500).json({
       status: "error",
       message: error.message
     });
   }
-
-  console.error(error);
 
   return res.status(500).json({
     status: "error",

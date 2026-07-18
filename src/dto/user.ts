@@ -8,7 +8,7 @@ export interface User {
   nick: string;
   email: string;
   password: string;
-  bio?: string;
+  bio?: string | null;
   avatar?: string;
   created_at?: Date;
 }

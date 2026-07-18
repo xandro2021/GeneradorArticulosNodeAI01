@@ -2,7 +2,7 @@
  * src/controllers/user.ts
  */
 import { Request, Response } from "express";
-import { RegisterUserDto } from '../dto/user.js';
+import { LoginUserDto, RegisterUserDto } from '../dto/user.js';
 import ServiceUser from '../services/user.js';
 
 /*
@@ -16,19 +16,30 @@ import ServiceUser from '../services/user.js';
  */
 const register = async (req: Request<{}, {}, RegisterUserDto>, res: Response) => {
 
-  await ServiceUser.register(req.body);
+  const user = await ServiceUser.register(req.body);
 
   return res.status(201).json({
     status: "success",
-    body: req.body
+    user
   });
 
 };
 
-const login = async (req: Request, res: Response) => {
+/*
+ * Recoger los datos del body
+ * Comprobar que me llegan bien
+ * Comprobar que el usuario existe
+ * Comparar la contraseña
+ * Crear el JWT
+ * Devolver respuesta
+ */
+const login = async (req: Request<{}, {}, LoginUserDto>, res: Response) => {
+
+  const result = await ServiceUser.login(req.body);
+
   res.status(200).json({
     status: 200,
-    message: "Acción para identificar usuario"
+    result
   });
 };
 

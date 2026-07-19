@@ -2,26 +2,20 @@
  * src/dto/user.ts
  */
 
-export interface User {
-  name: string;
-  surname: string;
-  nick: string;
-  email: string;
-  password: string;
-  bio?: string | null;
-  avatar?: string;
-  created_at?: Date;
-}
+import { UserBase } from "../entities/user.js";
+
 
 export type RegisterUserDto = Pick<
-  User,
+  UserBase,
   "name" | "surname" | "nick" | "email" | "password" | "bio"
 >;
 
-export type LoginUserDto = Pick<User, "email" | "password">;
+export type LoginUserDto = Pick<UserBase, "email" | "password">;
 
 export type UpdateUserDto = Partial<
-  Pick<User, "name" | "surname" | "nick" | "email" | "bio">
+  Pick<UserBase, "name" | "surname" | "nick" | "email" | "bio">
 >;
 
-export type UserResponseDto = Omit<User, "password">;
+export interface UserResponseDto extends Omit<UserBase, "password"> {
+  _id?: string;
+}

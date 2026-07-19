@@ -6,6 +6,7 @@ import { LoginUserDto, RegisterUserDto, UserResponseDto } from '../dto/user.js';
 import { AppError } from '../errors/AppError.js';
 import validate from '../helpers/validate-user.js';
 import User from '../models/user.js';
+import jwt from '../helpers/jwt.js';
 
 const register = async (user: RegisterUserDto) => {
 
@@ -63,10 +64,10 @@ const login = async (body: LoginUserDto) => {
         throw new AppError(400, "La contraseña no es correcta!!!");
     }
 
-    const token = null;
+    const token = jwt.createToken(user);
 
     const userLogin = {
-        _id: user._id,
+        _id: user._id.toString(),
         name: user.name,
         nick: user.nick
     };

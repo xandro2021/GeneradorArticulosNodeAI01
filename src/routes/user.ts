@@ -12,7 +12,8 @@ import {
   profile,
   update,
   upload,
-  avatar
+  avatar,
+  pruebaJWT
 } from '../controllers/user.js';
 
 // Subida de archivos
@@ -24,6 +25,7 @@ router.get('/profile/:id', profile);
 router.put('/update', update);
 router.put('/upload/:id', upload);
 router.get('/avatar/:file', avatar);
+router.get('/pruebajwt', pruebaJWT);
 
 // Exportar las rutas
 export default router;

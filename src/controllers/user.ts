@@ -72,6 +72,14 @@ const avatar = async (req: Request, res: Response) => {
   });
 };
 
+const pruebaJWT = async(req: Request, res: Response) => {
+
+  res.status(200).json({
+    status: 200,
+    message: "Estas correctamente autenticado"
+  });
+};
+
 // Exportaciones
 export {
   register,
@@ -79,5 +87,6 @@ export {
   profile,
   update,
   upload,
-  avatar
+  avatar,
+  pruebaJWT
 }

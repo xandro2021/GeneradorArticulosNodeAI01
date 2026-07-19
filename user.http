@@ -1,7 +1,7 @@
 @host = http://localhost:3000
 @api = {{host}}/api/user
 @id = 6884e2a5a9d35c51cb2d3d8a
-@token = TU_JWT_AQUI
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjZhNWFlZDdjYjFlZTBhNzM0YWE5ZmYwNSIsIm5hbWUiOiJBbGVqYW5kcm8iLCJzdXJuYW1lIjoiU2FsYXphciIsIm5pY2siOiJ4YW5kcm8iLCJlbWFpbCI6InhhbmRyb0BleGFtcGxlLmNvbSIsImJpbyI6IkRlc2Fycm9sbGFkb3IgQmFja2VuZCBjb24gTm9kZS5qcyIsImF2YXRhciI6ImRlZmF1bHQucG5nIiwiaWF0IjoxNzg0NDIwNTI0LCJleHAiOjE3ODcwMTI1MjR9.h7_K2Ed7QgFoDFNBoSBhhWpsZGCKoJHX6tMVc5pmJjk
 
 ### ============================================
 ### Registrar usuario
@@ -31,6 +31,13 @@ Content-Type: application/json
   "email": "xandro@example.com",
   "password": "12345678"
 }
+
+###
+
+### ============================================
+### prueba JWT
+### ============================================
+GET {{api}}/pruebajwt
 
 ###
 

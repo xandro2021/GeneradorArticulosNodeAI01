@@ -4,13 +4,14 @@
  * Conectarme a mongodb
  * Exportar la conexión
  */
+import { env } from '../config/env.js';
 import mongoose from "mongoose";
 
 const connection = async (): Promise<void> => {
     try {
         mongoose.set("strictQuery", true);
 
-        await mongoose.connect(process.env.MONGODB_URI!);
+        await mongoose.connect(env.mongoUri);
 
         console.log("Te has conectado correctamente");
     } catch (error) {

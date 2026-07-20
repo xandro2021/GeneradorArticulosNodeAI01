@@ -1,14 +1,12 @@
 export class AppError extends Error {
 
-    constructor(
-        public statusCode: number,
-        message: string
-    ) {
-
-        super(message);
-
-        this.name = "AppError";
-
-    }
+  constructor(
+    public statusCode: number,
+    message: string,
+    public cause?: unknown
+  ) {
+    super(message);
+    this.name = "AppError";
+  }
 
 }

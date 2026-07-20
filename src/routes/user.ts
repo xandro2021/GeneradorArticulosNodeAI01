@@ -4,6 +4,8 @@
 
 // Importaciones
 import express from 'express';
+import auth from '../middlewares/auth.js';
+
 const router = express.Router();
 
 import {
@@ -25,7 +27,7 @@ router.get('/profile/:id', profile);
 router.put('/update', update);
 router.put('/upload/:id', upload);
 router.get('/avatar/:file', avatar);
-router.get('/pruebajwt', pruebaJWT);
+router.get('/pruebajwt', auth, pruebaJWT);
 
 // Exportar las rutas
 export default router;

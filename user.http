@@ -57,7 +57,7 @@ Content-Type: application/json
 
 {
   "name": "Alejandro",
-  "surname": "Salazar Mora",
+  "surname": "Castro C",
   "nick": "xandrodev",
   "email": "xandro@example.com",
   "bio": "Nueva biografía"

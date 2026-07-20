@@ -9,10 +9,10 @@
  * Comprobar que todo se cumpla
  */
 import validator from "validator";
-import { RegisterUserDto } from "../dto/user.js";
+import { RegisterUserDto, ValidatableUser } from "../dto/user.js";
 import { AppError } from "../errors/AppError.js";
 
-const validate = (user: RegisterUserDto) => {
+const validate = (user: RegisterUserDto | ValidatableUser) => {
 
   const name =
     !validator.isEmpty(user.name) &&
@@ -26,7 +26,7 @@ const validate = (user: RegisterUserDto) => {
   const surname =
     !validator.isEmpty(user.surname) &&
     validator.isLength(user.surname, { min: 3, max: 80 }) &&
-    validator.isAlpha(user.surname, "es-ES");
+    validator.isAlpha(user.surname.replace(/\s/g, ""), "es-ES");
 
   if (!surname) {
     throw new AppError(400, "El usuario no se ha superado la validación del apellido");
@@ -48,12 +48,17 @@ const validate = (user: RegisterUserDto) => {
     throw new AppError(400, "Email inválido");
   }
 
-  const password =
-    !validator.isEmpty(user.password) &&
-    validator.isLength(user.password, { min: 6, max: 100 });
+  if ("password" in user) {
+    const password =
+      !validator.isEmpty(user.password) &&
+      validator.isLength(user.password, { min: 6, max: 100 });
 
-  if (!password) {
-    throw new AppError(400, "El password no debe estar vacío y debe tener entre 6 y 100 caracteres");
+    if (!password) {
+      throw new AppError(
+        400,
+        "El password no debe estar vacío y debe tener entre 6 y 100 caracteres"
+      );
+    }
   }
 
 };

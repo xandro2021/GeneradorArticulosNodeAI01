@@ -2,12 +2,13 @@
  * src/services/user.ts
  */
 import bcrypt from 'bcryptjs';
-import { LoginUserDto, RegisterUserDto, UserProfileDto, UserResponseDto } from '../dto/user.js';
+import { LoginUserDto, RegisterUserDto, UpdateUserDto, UserProfileDto, UserResponseDto, ValidatableUser } from '../dto/user.js';
 import { AppError } from '../errors/AppError.js';
 import validate from '../helpers/validate-user.js';
 import User from '../models/user.js';
 import jwt from '../helpers/jwt.js';
 import { guardAsync } from '../errors/guard.js';
+import { JwtPayload } from '../types/jwtPayLoad.js';
 
 const register = async (user: RegisterUserDto) => {
 
@@ -103,8 +104,45 @@ const profile = async (id: string): Promise<UserProfileDto> => {
     return userResponse;
 };
 
+const update = async (body: UpdateUserDto, userIdentity: JwtPayload) => {
+
+    const userToUpdate: ValidatableUser = {
+        name: body.name ?? userIdentity.name,
+        surname: body.surname ?? userIdentity.surname,
+        nick: body.nick?.toLowerCase() ?? userIdentity.nick,
+        email: body.email?.toLowerCase() ?? userIdentity.email,
+        bio: body.bio ?? userIdentity.bio
+    }
+
+    validate(userToUpdate);
+
+    // Buscar si no hay duplicados
+    const users = await User.find({
+        $or: [
+            { email: userToUpdate.email.toLowerCase() },
+            { nick: userToUpdate.nick.toLowerCase() }
+        ]
+    });
+
+    const userExist = users.some(user => user._id.toString() !== userIdentity.id);
+
+    if (userExist) {
+        throw new AppError(400, "El email o el nick ya está siendo utilizado por otro usuario");
+    }
+
+    // Actualizar el usuario en la base de datos
+    const userUpdated = await User.findByIdAndUpdate(userIdentity.id, userToUpdate, { new: true, select: "-password" });
+
+    if (!userUpdated) {
+        throw new AppError(404, "No se puede actualizar el usuario");
+    }
+
+    return userUpdated;
+};
+
 export default {
     register,
     login,
-    profile
+    profile,
+    update
 }

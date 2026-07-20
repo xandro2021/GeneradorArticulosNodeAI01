@@ -2,7 +2,7 @@
  * src/controllers/user.ts
  */
 import { Request, Response } from "express";
-import { LoginUserDto, RegisterUserDto } from '../dto/user.js';
+import { LoginUserDto, RegisterUserDto, UpdateUserDto } from '../dto/user.js';
 import ServiceUser from '../services/user.js';
 
 /*
@@ -55,10 +55,22 @@ const profile = async (req: Request, res: Response) => {
   });
 };
 
-const update = async (req: Request, res: Response) => {
+/*
+ * Coseguir identidad del usuario
+ * Crear objeto con los nuevos datos
+ * Validar los datos
+ * Buscar si el usuario existe en la BD
+ * Recorrer y comprobar los usuarios
+ * Actualizar el usuario en la base de datos
+ */
+const update = async (req: Request<{}, {}, UpdateUserDto>, res: Response) => {
+
+  const user = await ServiceUser.update(req.body, req.user!);
+
   res.status(200).json({
     status: 200,
-    message: "Acción para editar un usuario"
+    message: "Acción para editar un usuario",
+    user
   });
 };
 

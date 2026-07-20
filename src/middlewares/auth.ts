@@ -11,6 +11,7 @@ import jwt from 'jwt-simple';
 import { env } from '../config/env.js';
 import { AppError } from "../errors/AppError.js";
 import { JwtPayload } from "../types/jwtPayLoad.js";
+import { guard } from "../errors/guard.js";
 
 /*
  * Comprobar si me llega la cabecera de autenticación
@@ -38,7 +39,7 @@ const auth = (
     throw new AppError(401, "Token inválido");
   }
 
-  const payload = jwt.decode(token, env.jwtSecret) as JwtPayload;
+  const payload = guard(() => jwt.decode(token, env.jwtSecret) as JwtPayload, 500, "Error al decodificar el token");
 
   const now = Math.floor(Date.now() / 1000);
 
@@ -49,7 +50,7 @@ const auth = (
   // Agregar datos del usuario a la request
   req.user = payload;
 
-  console.log(payload);
+  console.log('Payload:\n' + payload);
   next();
 };
 

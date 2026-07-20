@@ -29,3 +29,5 @@ export type UserProfileDto = UserBasicDto & Pick<
   UserBase,  "bio" | "created_at"> & {
   _id: string;
 };
+
+export type ValidatableUser = Omit<RegisterUserDto, "password">;

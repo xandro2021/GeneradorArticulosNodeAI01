@@ -24,7 +24,7 @@ import {
 router.post('/register', register);
 router.post('/login', login);
 router.get('/profile/:id', profile);
-router.put('/update', update);
+router.put('/update', auth, update);
 router.put('/upload/:id', upload);
 router.get('/avatar/:file', avatar);
 router.get('/pruebajwt', auth, pruebaJWT);

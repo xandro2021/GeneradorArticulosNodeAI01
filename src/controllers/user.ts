@@ -45,9 +45,13 @@ const login = async (req: Request<{}, {}, LoginUserDto>, res: Response) => {
 };
 
 const profile = async (req: Request, res: Response) => {
+
+  const user = await ServiceUser.profile(req.params.id as string);
+
   res.status(200).json({
     status: 200,
-    message: "Acción para ver el perfil de un usuario"
+    message: "Acción para ver el perfil de un usuario",
+    user
   });
 };
 
@@ -76,7 +80,8 @@ const pruebaJWT = async(req: Request, res: Response) => {
 
   res.status(200).json({
     status: 200,
-    message: "Estas correctamente autenticado"
+    message: "Estas correctamente autenticado",
+    datosDelUsuario: req.user
   });
 };
 

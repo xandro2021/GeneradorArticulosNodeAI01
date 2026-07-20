@@ -19,3 +19,13 @@ export type UpdateUserDto = Partial<
 export interface UserResponseDto extends Omit<UserBase, "password"> {
   _id?: string;
 }
+
+type UserBasicDto = Pick<
+  UserBase,
+  "name" | "surname" | "nick" | "avatar"
+>;
+
+export type UserProfileDto = UserBasicDto & Pick<
+  UserBase,  "bio" | "created_at"> & {
+  _id: string;
+};

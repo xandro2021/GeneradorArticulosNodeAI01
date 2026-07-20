@@ -1,8 +1,7 @@
 @host = http://localhost:3000
 @api = {{host}}/api/user
-@id = 6884e2a5a9d35c51cb2d3d8a
-@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjZhNWFlZDdjYjFlZTBhNzM0YWE5ZmYwNSIsIm5hbWUiOiJBbGVqYW5kcm8iLCJzdXJuYW1lIjoiU2FsYXphciIsIm5pY2siOiJ4YW5kcm8iLCJlbWFpbCI6InhhbmRyb0BleGFtcGxlLmNvbSIsImJpbyI6IkRlc2Fycm9sbGFkb3IgQmFja2VuZCBjb24gTm9kZS5qcyIsImF2YXRhciI6ImRlZmF1bHQucG5nIiwiaWF0IjoxNzg0NDIwNTI0LCJleHAiOjE3ODcwMTI1MjR9.h7_K2Ed7QgFoDFNBoSBhhWpsZGCKoJHX6tMVc5pmJjk
-
+@id = 6a5aed7cb1ee0a734aa9ff05
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjZhNWFlZDdjYjFlZTBhNzM0YWE5ZmYwNSIsIm5hbWUiOiJBbGVqYW5kcm8iLCJzdXJuYW1lIjoiU2FsYXphciIsIm5pY2siOiJ4YW5kcm8iLCJlbWFpbCI6InhhbmRyb0BleGFtcGxlLmNvbSIsImJpbyI6IkRlc2Fycm9sbGFkb3IgQmFja2VuZCBjb24gTm9kZS5qcyIsImF2YXRhciI6ImRlZmF1bHQucG5nIiwiaWF0IjoxNzg0NTE2Nzk3LCJleHAiOjE3ODcxMDg3OTd9.KNrAI2z5M6Ob7VMf7F7Z9PtQR8KsEblh1Cp70vd2jYM
 ### ============================================
 ### Registrar usuario
 ### ============================================
@@ -38,6 +37,7 @@ Content-Type: application/json
 ### prueba JWT
 ### ============================================
 GET {{api}}/pruebajwt
+Authorization: Bearer {{token}}
 
 ###
 

@@ -2,11 +2,12 @@
  * src/services/user.ts
  */
 import bcrypt from 'bcryptjs';
-import { LoginUserDto, RegisterUserDto, UserResponseDto } from '../dto/user.js';
+import { LoginUserDto, RegisterUserDto, UserProfileDto, UserResponseDto } from '../dto/user.js';
 import { AppError } from '../errors/AppError.js';
 import validate from '../helpers/validate-user.js';
 import User from '../models/user.js';
 import jwt from '../helpers/jwt.js';
+import { guardAsync } from '../errors/guard.js';
 
 const register = async (user: RegisterUserDto) => {
 
@@ -78,7 +79,32 @@ const login = async (body: LoginUserDto) => {
     }
 };
 
+const profile = async (id: string): Promise<UserProfileDto> => {
+    // El select es para ocultar las propiedades que no necesito, y el guard es para hacer try-catch con error personalizado
+    const user = await guardAsync(() => User.findById(id).select({
+        "password": 0,
+        "createad_at": 0
+    }), 404, "Error al buscar usuario");
+
+    if (!user) {
+        throw new AppError(404, "El usuario no existe!!!");
+    }
+
+    const userResponse: UserProfileDto = {
+        _id: user._id.toString(),
+        name: user.name,
+        surname: user.surname,
+        nick: user.nick,
+        avatar: user.avatar,
+        bio: user.bio,
+        created_at: user.created_at
+    };
+
+    return userResponse;
+};
+
 export default {
     register,
-    login
+    login,
+    profile
 }

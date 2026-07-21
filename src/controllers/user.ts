@@ -4,6 +4,10 @@
 import { Request, Response } from "express";
 import { LoginUserDto, RegisterUserDto, UpdateUserDto } from '../dto/user.js';
 import ServiceUser from '../services/user.js';
+import { AppError } from "../errors/AppError.js";
+import { guardAsync } from "../errors/guard.js";
+import path from 'path';
+import { promises as fs } from "fs";
 
 /*
  * Recoger datos de peticion
@@ -35,9 +39,9 @@ const register = async (req: Request<{}, {}, RegisterUserDto>, res: Response) =>
  */
 const login = async (req: Request<{}, {}, LoginUserDto>, res: Response) => {
 
-  const { userLogin : user, token } = await ServiceUser.login(req.body);
+  const { userLogin: user, token } = await ServiceUser.login(req.body);
 
-  res.status(200).json({
+  return res.status(200).json({
     status: "success",
     user,
     token
@@ -48,7 +52,7 @@ const profile = async (req: Request, res: Response) => {
 
   const user = await ServiceUser.profile(req.params.id as string);
 
-  res.status(200).json({
+  return res.status(200).json({
     status: 200,
     message: "Acción para ver el perfil de un usuario",
     user
@@ -67,28 +71,52 @@ const update = async (req: Request<{}, {}, UpdateUserDto>, res: Response) => {
 
   const user = await ServiceUser.update(req.body, req.user!);
 
-  res.status(200).json({
+  return res.status(200).json({
     status: 200,
     message: "Acción para editar un usuario",
     user
   });
 };
 
+/*
+ * Recoger id de usuario
+ * Recoger el fichero y comprobar que existe
+ * Nombre del archivo
+ * Sacar la extension del archivo
+ * Borrar el archivo si la extension es incorrecta
+ * Buscar y actualizar el usuario en la bd
+ */
 const upload = async (req: Request, res: Response) => {
-  res.status(200).json({
+  const id = req.user?.id;
+
+  if (!req.file) {
+    throw new AppError(400, "La petición no incluye la imagen del avatar");
+  }
+
+  const user = await guardAsync(() => ServiceUser.upload(id!, req.file!), 500, "Error al actualizar usuario");
+
+  return res.status(200).json({
     status: 200,
-    message: "Acción para subir avatar o imagen de usuario"
+    message: "Acción para subir avatar o imagen de usuario",
+    user
   });
 };
 
 const avatar = async (req: Request, res: Response) => {
-  res.status(200).json({
-    status: 200,
-    message: "Acción para sacar la imagen de avatar del usuario"
-  });
+    const file = req.params.file;
+
+    const filePath = "./uploads/avatars/" + file;
+
+    try {
+        await fs.stat(filePath);
+
+        return res.sendFile(path.resolve(filePath));
+    } catch {
+        throw new AppError(404, "La imagen no existe");
+    }
 };
 
-const pruebaJWT = async(req: Request, res: Response) => {
+const pruebaJWT = async (req: Request, res: Response) => {
 
   res.status(200).json({
     status: 200,

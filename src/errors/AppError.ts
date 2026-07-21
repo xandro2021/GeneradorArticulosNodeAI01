@@ -1,3 +1,6 @@
+/*
+ * src/errors/AppError.ts
+ */
 export class AppError extends Error {
 
   constructor(

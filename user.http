@@ -1,7 +1,7 @@
 @host = http://localhost:3000
 @api = {{host}}/api/user
 @id = 6a5aed7cb1ee0a734aa9ff05
-@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjZhNWFlZDdjYjFlZTBhNzM0YWE5ZmYwNSIsIm5hbWUiOiJBbGVqYW5kcm8iLCJzdXJuYW1lIjoiU2FsYXphciIsIm5pY2siOiJ4YW5kcm8iLCJlbWFpbCI6InhhbmRyb0BleGFtcGxlLmNvbSIsImJpbyI6IkRlc2Fycm9sbGFkb3IgQmFja2VuZCBjb24gTm9kZS5qcyIsImF2YXRhciI6ImRlZmF1bHQucG5nIiwiaWF0IjoxNzg0NTE2Nzk3LCJleHAiOjE3ODcxMDg3OTd9.KNrAI2z5M6Ob7VMf7F7Z9PtQR8KsEblh1Cp70vd2jYM
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjZhNWFlZDdjYjFlZTBhNzM0YWE5ZmYwNSIsIm5hbWUiOiJBbGVqYW5kcm8iLCJzdXJuYW1lIjoiQ2FzdHJvIEMiLCJuaWNrIjoieGFuZHJvZGV2IiwiZW1haWwiOiJ4YW5kcm9AZXhhbXBsZS5jb20iLCJiaW8iOiJOdWV2YSBiaW9ncmFmw61hIiwiYXZhdGFyIjoiZGVmYXVsdC5wbmciLCJpYXQiOjE3ODQ2MDIyNTMsImV4cCI6MTc4NzE5NDI1M30.VVul1NcWD082wGbLyplTWVJoX5xa03jweYRjmbwsW7w
 ### ============================================
 ### Registrar usuario
 ### ============================================
@@ -80,16 +80,16 @@ Content-Type: image/png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
-ID=6884e2a5a9d35c51cb2d3d8a
-TOKEN="TU_TOKEN"
-IMG="$HOME/Imágenes/avatar.png"
+ID=6a5aed7cb1ee0a734aa9ff05
+TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjZhNWFlZDdjYjFlZTBhNzM0YWE5ZmYwNSIsIm5hbWUiOiJBbGVqYW5kcm8iLCJzdXJuYW1lIjoiQ2FzdHJvIEMiLCJuaWNrIjoieGFuZHJvZGV2IiwiZW1haWwiOiJ4YW5kcm9AZXhhbXBsZS5jb20iLCJiaW8iOiJOdWV2YSBiaW9ncmFmw61hIiwiYXZhdGFyIjoiZGVmYXVsdC5wbmciLCJpYXQiOjE3ODQ2MDIyNTMsImV4cCI6MTc4NzE5NDI1M30.VVul1NcWD082wGbLyplTWVJoX5xa03jweYRjmbwsW7w"
+IMG="$HOME/Imágenes/gato/f02.png"
 
 curl -X PUT \
   -H "Authorization: Bearer $TOKEN" \
   -F "file0=@$IMG" \
-  "http://localhost:3000/api/user/upload/$ID"
+  "http://localhost:3000/api/user/upload/$ID" | jq
 
 ### ============================================
 ### Obtener avatar
 ### ============================================
-GET {{api}}/avatar/default.png
+GET {{api}}/avatar/avatar-1784608182749-f02.png

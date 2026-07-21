@@ -9,6 +9,8 @@ import User from '../models/user.js';
 import jwt from '../helpers/jwt.js';
 import { guardAsync } from '../errors/guard.js';
 import { JwtPayload } from '../types/jwtPayLoad.js';
+import path from 'path';
+import fs from 'fs';
 
 const register = async (user: RegisterUserDto) => {
 
@@ -140,9 +142,32 @@ const update = async (body: UpdateUserDto, userIdentity: JwtPayload) => {
     return userUpdated;
 };
 
+const upload = async (id: string, file: Express.Multer.File) => {
+
+    const { originalname, filename, path: filePath } = file;
+
+    const ext = path.extname(originalname).toLowerCase();
+    const validExtensions = [".png", ".jpg", ".jpeg", ".gif"];
+
+    if (!validExtensions.includes(ext)) {
+        fs.unlinkSync(filePath);
+        throw new AppError(400, "La extensión del archivo no es válida");
+    }
+
+    const userUpdated = await User.findByIdAndUpdate(id, { avatar: filename }, { new: true });
+
+    if (!userUpdated) {
+        throw new AppError(404, "El usuario no existe");
+    }
+
+    return userUpdated;
+};
+
+
 export default {
     register,
     login,
     profile,
-    update
+    update,
+    upload,
 }

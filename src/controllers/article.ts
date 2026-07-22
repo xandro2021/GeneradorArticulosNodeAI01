@@ -6,12 +6,32 @@
  * Exportaciones
  */
 import { Request, Response } from 'express';
+import { AppError } from '../errors/AppError.js';
+import validate from '../helpers/validate-article.js';
+import Article from '../models/article.js';
+import { guardAsync } from '../errors/guard.js';
 
 const save = async (req: Request, res: Response) => {
 
+  let body = req.body;
+
+  validate(body);
+
+  const identityId = req.user!.id;
+  body.user = identityId;
+
+  const articleToSave = new Article(body);
+
+  const article = await guardAsync(() => articleToSave.save(), 500, "Error al guardar los articulos");
+
+  if (!article) {
+    throw new AppError(404, "El articulo no se ha guardado correctamente");
+  }
+
   return res.status(200).json({
-    status: 200,
-    message: "Accion para guardar artículos"
+    status: "success",
+    message: "Accion para guardar articulos",
+    article
   });
 };
 

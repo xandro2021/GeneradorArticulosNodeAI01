@@ -1,0 +1,97 @@
+@host = http://localhost:3000/api/article
+
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjZhNWFlZDdjYjFlZTBhNzM0YWE5ZmYwNSIsIm5hbWUiOiJBbGVqYW5kcm8iLCJzdXJuYW1lIjoiQ2FzdHJvIEMiLCJuaWNrIjoieGFuZHJvZGV2IiwiZW1haWwiOiJ4YW5kcm9AZXhhbXBsZS5jb20iLCJiaW8iOiJOdWV2YSBiaW9ncmFmw61hIiwiYXZhdGFyIjoiZGVmYXVsdC5wbmciLCJpYXQiOjE3ODQ2MDIyNTMsImV4cCI6MTc4NzE5NDI1M30.VVul1NcWD082wGbLyplTWVJoX5xa03jweYRjmbwsW7w
+
+@articleId = 688000000000000000000001
+@userId = 688000000000000000000002
+
+### ======================================
+### Guardar artículo
+### ======================================
+POST {{host}}/save
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Aprendiendo Node.js",
+  "content": "Este es el contenido de mi primer artículo realizado con Express y MongoDB."
+}
+
+### ======================================
+### Listar artículos (Página 1)
+### ======================================
+GET {{host}}/list/1
+Authorization: Bearer {{token}}
+
+### ======================================
+### Detalle de artículo
+### ======================================
+GET {{host}}/detail/{{articleId}}
+Authorization: Bearer {{token}}
+
+### ======================================
+### Generar artículo con IA
+### ======================================
+POST {{host}}/generate-ia
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "prompt": "Escribe un artículo sobre Node.js y MongoDB."
+}
+
+### ======================================
+### Actualizar artículo
+### ======================================
+PUT {{host}}/update
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "_id": "{{articleId}}",
+  "title": "Aprendiendo Node.js con TypeScript",
+  "content": "Contenido actualizado del artículo."
+}
+
+### ======================================
+### Eliminar artículo
+### ======================================
+DELETE {{host}}/remove
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "_id": "{{articleId}}"
+}
+
+### ======================================
+### Artículos por usuario
+### ======================================
+GET {{host}}/by-user/{{userId}}
+Authorization: Bearer {{token}}
+
+### ======================================
+### Buscar artículos
+### ======================================
+GET {{host}}/search/node
+Authorization: Bearer {{token}}
+
+### ======================================
+### Subir imagen
+### ======================================
+PUT {{host}}/upload/{{articleId}}
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=----Boundary
+
+------Boundary
+Content-Disposition: form-data; name="file"; filename="imagen.jpg"
+Content-Type: image/jpeg
+
+< ./imagen.jpg
+------Boundary--
+
+### ======================================
+### Obtener imagen
+### ======================================
+GET {{host}}/poster/default.png
+Authorization: Bearer {{token}}

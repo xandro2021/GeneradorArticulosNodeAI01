@@ -8,8 +8,7 @@
  * Exporto las rutas
  */
 import express from 'express';
-
-const router = express.Router();
+import auth from '../middlewares/auth.js';
 
 import {
   save,
@@ -24,9 +23,25 @@ import {
   poster
 } from '../controllers/article.js';
 
-router.post('/save', save);
+import multer from 'multer';
+
+const router = express.Router();
+// Subida de archivos
+
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => {
+    cb(null, "./uploads/posters");
+  },
+  filename: (_req, file, cb) => {
+    cb(null, "poster-" + Date.now() + "-" + file.originalname);
+  }
+});
+
+const uploadsPoster = multer({ storage });
+
+router.post('/save', auth, save);
 router.get('/list/:page', list);
-router.get('/detail/:page', details);
+router.get('/detail/:id', details);
 router.post('/generate-ia', generate);
 router.put('/update', update);
 router.delete('/remove', remove);

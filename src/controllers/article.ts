@@ -10,6 +10,7 @@ import { AppError } from '../errors/AppError.js';
 import validate from '../helpers/validate-article.js';
 import Article from '../models/article.js';
 import { guardAsync } from '../errors/guard.js';
+import { populate } from 'dotenv';
 
 const save = async (req: Request, res: Response) => {
 
@@ -60,7 +61,8 @@ const list = async (req: Request, res: Response) => {
   const options = {
     page,
     limit: itemsPerPage,
-    sort: { created_at: -1 }
+    sort: { created_at: -1 },
+    populate:{ path: "user", select: "-password -__v -created_at -email" }
   };
 
   const result = await guardAsync(() => Article.paginate({}, options), 500, "Error al listar articulos");
@@ -81,9 +83,21 @@ const list = async (req: Request, res: Response) => {
 
 const details = async (req: Request, res: Response) => {
 
+  const id = req.params.id;
+  const article = await guardAsync(
+    () => Article.findById(id).populate({ path: "user", select: "-password -__v -created_at -email" }),
+    500,
+    "Error al buscar el articulo, verifique que el id sea correcto"
+  );
+
+  if (!article) {
+    throw new AppError(404, "No existe el articulo");
+  }
+
   return res.status(200).json({
-    status: 200,
-    message: "Accion para mostrar un solo artículo"
+    status: "success",
+    message: "Accion para mostrar un solo artículo",
+    article
   });
 };
 

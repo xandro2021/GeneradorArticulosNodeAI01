@@ -21,20 +21,23 @@ const errorHandler = (
 
     return res.status(error.statusCode).json({
       status: "error",
-      message: error.message
+      message: error.message,
+      error
     });
   }
   else if (error instanceof Error) {
 
     return res.status(500).json({
       status: "error",
-      message: error.message
+      message: error.message,
+      error
     });
   }
 
   return res.status(500).json({
     status: "error",
-    message: "Error interno del servidor"
+    message: "Error interno del servidor",
+    error
   });
 
 };

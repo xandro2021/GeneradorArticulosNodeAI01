@@ -35,11 +35,47 @@ const save = async (req: Request, res: Response) => {
   });
 };
 
+/*
+ * Sacar los parametros
+ * Controlar la pagina en la que estamos
+ * Consultar y listar los articulos (mongoose paginate)
+ * Devolver resultado
+ */
 const list = async (req: Request, res: Response) => {
 
+  const params = req.params;
+
+  let page = 1;
+
+  if (req.params.page) {
+    page = Number(req.params.page);
+
+    if (Number.isNaN(page) || page < 1) {
+      page = 1;
+    }
+  }
+
+  const itemsPerPage = 10;
+
+  const options = {
+    page,
+    limit: itemsPerPage,
+    sort: { created_at: -1 }
+  };
+
+  const result = await guardAsync(() => Article.paginate({}, options), 500, "Error al listar articulos");
+
+  if (!result) {
+    throw new AppError(404, "No hay articulos para mostrar");
+  }
+
   return res.status(200).json({
-    status: 200,
-    message: "Accion para listar los artículos"
+    status: "success",
+    message: "Accion para listar los artículos",
+    itemsPerPage,
+    total: result.totalDocs,
+    articles: result.docs,
+    pages: Math.ceil(result.totalDocs / itemsPerPage),
   });
 };
 

@@ -5,7 +5,14 @@
  * Definicion de esquema
  * Exportar modelo
  */
-import { Schema, model } from 'mongoose';
+import {
+  Schema,
+  model,
+  type InferSchemaType,
+  type PaginateModel
+} from "mongoose";
+
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const ArticleSchema = new Schema({
   title: {
@@ -30,4 +37,12 @@ const ArticleSchema = new Schema({
   }
 });
 
-export default model('Article', ArticleSchema, 'articles');
+ArticleSchema.plugin(mongoosePaginate);
+
+type Article = InferSchemaType<typeof ArticleSchema>;
+
+export default model<Article, PaginateModel<Article>>(
+    "Article",
+    ArticleSchema,
+    "articles"
+);
